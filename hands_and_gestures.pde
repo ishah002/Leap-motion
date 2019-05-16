@@ -47,13 +47,6 @@ void draw()
 //-------DRAW HANDS---------------------
   hand.draw();
   
-    //drawing a red box in the middle of the canvas
-  //rectMode(CENTER);  //where the center of rectangle will be
-  //strokeWeight(5);
-  //stroke(150, 0, 0);
-  //fill(#ff0000);
-  //rect(width/2, height/2, 100, 50);
-  
   
     ellipse(sphere_position.x,sphere_position.y,abs(handroll),abs(handroll));
     
@@ -93,8 +86,8 @@ void draw()
     }  //switch
     
     //--------TOUCH EMULATION------
-    //int touch_zone  = finger.getTouchZone();
-    //float touch_distance  =finger.getTouchDistance();
+    int touch_zone  = finger.getTouchZone();
+    float touch_distance  =finger.getTouchDistance();
     
     //switch(touch_zone)
     //{
@@ -125,7 +118,7 @@ void draw()
 }
 /*
 
-If(hand.getPinchStrength() == 1.00){
+If(hand_Pinch() == 1.00){
   
   when pinch is pniching update per frame the position of the 
   ellipse(finger.getPosition().x,finger.getPosition().y, 50, 50);
