@@ -95,11 +95,6 @@ void draw()
     //    break;
     //  case 0: //Hovering
     //    background(255, 255, 0); //yellow
-    //    //rectMode(CENTER);  //where the center of rectangle will be
-    //    //strokeWeight(5);
-    //    //stroke(150, 0, 0);
-    //    //fill(#ff0000);
-    //    //rect(width/2, height/2, 100, 50);
     //    println("hovering (#" + finger_id + "):"  + touch_distance);
     //    break;
     //  case 1: //touching
