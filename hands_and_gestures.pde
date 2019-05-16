@@ -2,12 +2,15 @@ import de.voidplus.leapmotion.*;
 
 LeapMotion leap;    //instance variable
 
+
 //initialisation
+ParticleSystem ps;
 void setup()
 {
   size(1024, 768, P3D); //dimensions and renderer
   background(255);
   leap = new LeapMotion(this);
+  ps = new ParticleSystem();
 }
 
 
@@ -47,8 +50,9 @@ void draw()
 //-------DRAW HANDS---------------------
   hand.draw();
   
-  
-    ellipse(sphere_position.x,sphere_position.y,abs(handroll),abs(handroll));
+
+     ps.addParticle(sphere_position,abs(handroll),new PVector(0,0.05));
+     ps.run();
     
     //Finger FOR loop and get attributes
     for (Finger finger : hand.getFingers())
@@ -120,3 +124,153 @@ If(hand_Pinch() == 1.00){
 }
 
 */
+
+
+// A class to describe a group of Particles
+// An ArrayList is used to manage the list of Particles 
+
+
+class ParticleSystem {
+  ArrayList<Particle> particles;
+  PVector origin;
+
+  ParticleSystem(PVector position) {
+    origin = position.copy();
+    particles = new ArrayList<Particle>();
+  }
+
+  void addParticle() {
+    particles.add(new Particle(origin));
+  }
+
+  void run() {
+    for (int i = particles.size()-1; i >= 0; i--) {
+      Particle p = particles.get(i);
+      p.run();
+      if (p.isDead()) {
+        particles.remove(i);
+      }
+    }
+  }
+}
+
+// A simple Particle class
+
+class Particle {
+  PVector position;
+  PVector velocity;
+  PVector acceleration;
+  float lifespan;
+  float ParticleSize;
+
+  Particle(PVector l) {
+     acceleration = new PVector(0, 0.001); //speed
+    velocity = new PVector(random(-0.3, 0.2), random(0.2, 0.4));  //space
+    position = l.copy();
+    lifespan = 255.0;
+    ParticleSize = random (12, 22);
+  }
+
+  void run() {
+    update();
+    display();
+  }
+
+  // Method to update position
+  void update() {
+    velocity.add(acceleration);
+    position.sub(velocity);
+    lifespan -= 0.7;
+  }
+
+  // Method to display
+  void display() {
+    noStroke();
+    //stroke(255, 165, 10, lifespan);
+    fill(226, constrain(lifespan + 20, 0, 255), 34, lifespan);
+    //fill(226, 88, 34, lifespan);
+    ellipse(position.x, position.y, ParticleSize, ParticleSize);
+  }
+
+  // Is the particle still useful?
+  boolean isDead() {
+    if (lifespan < 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+
+class ParticleSystem {
+  ArrayList<Particle> particles;
+  PVector origin;
+
+  ParticleSystem() {
+    particles = new ArrayList<Particle>();
+  }
+
+  void addParticle(PVector l,float height, PVector speed) {
+    particles.add(new Particle(l, height,speed));
+  }
+
+  void run() {
+    for (int i = particles.size()-1; i >= 0; i--) {
+      Particle p = particles.get(i);
+      p.run();
+      if (p.isDead()) {
+        particles.remove(i);
+      }
+    }
+  }
+}
+
+
+// A simple Particle class
+
+class Particle {
+  PVector position;
+  PVector velocity;
+  PVector acceleration;
+  float lifespan;
+  float ParticleSize;
+
+  Particle(PVector l,float height, PVector speed) {
+     acceleration = speed; //speed
+    velocity = new PVector(random(-0.75, 0.75), random(0.2, 0.4));  //space
+    position = l.copy();
+    lifespan = height;
+    ParticleSize = random (12, 22);
+  }
+
+  void run() {
+    update();
+    display();
+  }
+
+  // Method to update position
+  void update() {
+    velocity.add(acceleration);
+    position.sub(velocity);
+    lifespan -= 0.7;
+  }
+
+  // Method to display
+  void display() {
+    noStroke();
+    //stroke(255, 165, 10, lifespan);
+    fill(226, constrain(lifespan + 20, 0, 255), 34, lifespan);
+    //fill(226, 88, 34, lifespan);
+    ellipse(position.x, position.y, ParticleSize, ParticleSize);
+  }
+
+  // Is the particle still useful?
+  boolean isDead() {
+    if (lifespan < 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
